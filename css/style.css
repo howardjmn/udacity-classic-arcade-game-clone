@@ -1,0 +1,37 @@
+body
+{
+    text-align: center;
+}
+
+.button
+{
+  font-size: 1.15em;
+  color: white;
+  border: 5px;
+  text-shadow: 0 -1px 0 red, 15%;
+  background: black;
+}
+
+.levelButton
+{
+  font-size: 1em;
+  color: white;
+  border: none;
+  text-shadow: 0 -1px 0 red, 15%;
+  background: black;
+}
+
+.selectedButton
+{
+    font-size: 1.15em;
+    color: white;
+    background: red;
+}
+
+#instructionRow
+{
+    max-width: 0px;
+    margin: auto;
+    border: 3px solid black;
+    font-family: "Arial Black", Helvetica, sans-serif;
+}
