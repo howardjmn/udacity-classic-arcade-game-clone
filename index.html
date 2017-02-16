@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Effective JavaScript: Frogger</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <div id="restartRow">
+            <button id="restartButton" class="button" onclick="restart()">Restart Game</button>
+        </div>
+        <div id="instructionRow">
+            <p id="instructions"></p>
+         </div>
+        <div id="levelRow">
+            <button id="level1Button" class="levelButton" onclick="selectLevel(1)"></button>
+            <button id="level2Button" class="levelButton" onclick="selectLevel(2)"></button>
+            <button id="level3Button" class="levelButton" onclick="selectLevel(3)"></button>
+        </div>
+        <div id="gameArea">
+            <script src="js/resources.js"></script>
+            <script src="js/app.js"></script>
+            <script src="js/engine.js"></script>
+        </div>
+    </body>
+</html>
