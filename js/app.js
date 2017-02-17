@@ -75,7 +75,7 @@ Enemy.prototype.update = function(dt)
     this.x += this.speed * dt;
 
     // when enemy reaches border call reset
-    if (this.x > this.canvasWidth)
+    if (this.x > 505)
     {
         this.reset()
     }
@@ -94,7 +94,7 @@ Enemy.prototype.render = function()
 */
 Enemy.prototype.reset = function()
 {
-    ctx.clearRect(10, 30, this.canvasWidth, this.canvasWidth);
+    ctx.clearRect(10, 30, 500, 500);
     this.x = -200;
 };
 
@@ -147,7 +147,7 @@ Player.prototype.update = function()
 */
 Player.prototype.reset = function()
 {
-    ctx.clearRect(10, 30, this.canvasWidth, this.canvasWidth);
+    ctx.clearRect(10, 30, 500, 500);
     this.x = startX;
     this.y = startY;
 };
@@ -166,6 +166,7 @@ Player.prototype.render = function()
 */
 function setLevel()
 {
+    console.log("setLevel: " + this.level);
     document.getElementById('level1Button').className = "levelButton";
     document.getElementById('level2Button').className = "levelButton";
     document.getElementById('level3Button').className = "levelButton";

@@ -166,7 +166,7 @@ var Engine = (function(global)
     function gameOver(message)
     {
         document.getElementById('restartButton').style.display = 'inline';
-        ctx.clearRect(10,30,500,500);
+        ctx.clearRect(10, 30, 500, 500);
         scoreboardWithMessage(message);
         pause = true;
     }
