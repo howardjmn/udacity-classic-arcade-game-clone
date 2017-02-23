@@ -23,8 +23,8 @@
 function restart()
 {
     document.getElementById('restartButton').style.display = 'none';
-    this.score = 0;
-    this.pause = false;
+    player.score = 0;
+    global.pause = false;
     this.setLevel();
 }
 
@@ -137,7 +137,7 @@ var Engine = (function(global)
           (allEnemies[i].y + 35) >= (player.y))
         {
           player.reset();
-          score = score + collideWithBug;
+          player.score = player.score + collideWithBug;
           reset();
         }
       }
@@ -148,12 +148,12 @@ var Engine = (function(global)
     */
    function checkScore()
    {
-        if (score >= winningScore)
+        if (player.score >= winningScore)
         {
             gameOver("You Win!");
         }
 
-        if (score <= losingScore)
+        if (player.score <= losingScore)
         {
             gameOver("You Lose!");
         }
@@ -168,7 +168,7 @@ var Engine = (function(global)
         document.getElementById('restartButton').style.display = 'inline';
         ctx.clearRect(10, 30, 500, 500);
         scoreboardWithMessage(message);
-        pause = true;
+        global.pause = true;
     }
 
     /*
@@ -185,7 +185,7 @@ var Engine = (function(global)
     function scoreboardWithMessage(message)
     {
         ctx.font="25px Arial";
-        ctx.fillText("Score: " + score, 10, 50);
+        ctx.fillText("Score: " + player.score, 10, 50);
         ctx.fillText(message, 375, 50);
     }
 

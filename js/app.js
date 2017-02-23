@@ -1,17 +1,21 @@
 
+const canvasWidth = 505;  // width of playing field
+const canvasHeight = 606;  // height of playing field
+
+const avoidAllBugs = +100;  // points awarded when stream is reached
+const collideWithBug = -25;  // points lost when hitting a bug
+const winningScore = 1000;  // win game by accumulating this score
+const losingScore = -200;  // lose game by reaching this score
+
+/*
+    game levels
+*/
+const level1 = "Easy";
+const level2 = "Medium";
+const level3 = "Hard";
 
 var enemies = 0;  // number of bugs to avoid, more for harder levels
 var speedMultiplier = 0;  // bugs are faster at harder levels
-
-var score = 0;  // keep track of score
-var pause = false;  // true at end of game, false while game in progress
-var canvasWidth = 505;  // width of playing field
-var canvasHeight = 606;  // height of playing field
-
-var avoidAllBugs = +100;  // points awarded when stream is reached
-var collideWithBug = -25;  // points lost when hitting a bug
-var winningScore = 1000;  // win game by accumulating this score
-var losingScore = -200;  // lost game by reaching this score
 
 /*
     'restart' button not displayed while game in progress
@@ -23,13 +27,6 @@ document.getElementById('restartButton').style.display = "none";
 */
 document.getElementById('instructions').innerHTML = "Use the arrow keys to get past the bugs.  Score " + avoidAllBugs + " points by reaching the stream, lose " + collideWithBug + " points for hitting a bug.  " + winningScore + " points wins the game, but you lose if your score reaches " + losingScore + ".";
 document.getElementById('instructionRow').style.maxWidth = canvasWidth + "px";
-
-/*
-    game levels
-*/
-var level1 = "Easy";
-var level2 = "Medium";
-var level3 = "Hard";
 
 /*
     Initialize level selection buttons
@@ -45,17 +42,21 @@ document.getElementById('level3Button').innerHTML = level3;
 
 var level = level1;  // default level
 
+var GameObject = function(x, y, speed, score)
+{
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.score = 0;  // keep track of score
+    this.pause = false;  // true at end of game, false while game in progress
+}
+
 /*
     Create Enemies that the player must avoid
 */
 var Enemy = function(x, y, speed)
 {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
+    GameObject.call(this, x, y, speed)
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -75,9 +76,9 @@ Enemy.prototype.update = function(dt)
     this.x += this.speed * dt;
 
     // when enemy reaches border call reset
-    if (this.x > 505)
+    if (this.x > canvasWidth)
     {
-        this.reset()
+        this.reset();
     }
 };
 
@@ -105,40 +106,41 @@ Enemy.prototype.reset = function()
 */
 
 // Sets player starting coordinates
-var startX = 200;
-var startY = 400;
+const startX = 200;
+const startY = 400;
 
-var Player = function()
+var Player = function(score)
 {
-  this.x = startX;
-  this.y = startY;
-  score = 0;
-  this.sprite = 'images/char-boy.png';
+    GameObject.call(this, score);
+
+    this.x = startX;
+    this.y = startY;
+    this.sprite = 'images/char-boy.png';
 };
 
 Player.prototype.update = function()
 {
-  //set x axis boundaries
-  if (this.x < 0)
-  {
-    this.x = 0;
-  }
-  else if (this.x > 400)
-  {
-    this.x = 400;
-  }
+    //set x axis boundaries
+    if (this.x < 0)
+    {
+        this.x = 0;
+    }
+    else if (this.x > 400)
+    {
+        this.x = 400;
+    }
 
-  //set y axis boundaries
-  if (this.y > 400)
-  {
-    this.y = 400;
-  }
-  //reset if player reaches stream, and update score
-  else if (this.y < 0)
-  {
-    this.reset();
-    score += avoidAllBugs;
-  }
+    //set y axis boundaries
+    if (this.y > 400)
+    {
+        this.y = 400;
+    }
+    //reset if player reaches stream, and update score
+    else if (this.y < 0)
+    {
+        this.reset();
+        this.score += avoidAllBugs;
+    }
 };
 
 /*
@@ -157,7 +159,7 @@ Player.prototype.reset = function()
 */
 Player.prototype.render = function()
 {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 
@@ -166,7 +168,6 @@ Player.prototype.render = function()
 */
 function setLevel()
 {
-    console.log("setLevel: " + this.level);
     document.getElementById('level1Button').className = "levelButton";
     document.getElementById('level2Button').className = "levelButton";
     document.getElementById('level3Button').className = "levelButton";
@@ -221,7 +222,7 @@ setLevel();
 /*
     Place the player object in a variable called player
 */
-var player = new Player();
+var player = new Player(0);
 
 /*
     This listens for key presses and sends the keys to your
@@ -245,7 +246,7 @@ document.addEventListener('keyup', function(e)
 */
 Player.prototype.handleInput = function(key)
 {
-    if (!pause)
+    if (!global.pause)
     {
         switch (key)
         {
@@ -267,6 +268,6 @@ Player.prototype.handleInput = function(key)
 
             default:
               break;
-          }
         }
+    }
 };
